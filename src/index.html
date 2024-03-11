@@ -3,12 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="./style.css" />
+    <title>ToDoList</title>
+    <link rel="stylesheet" href="./input.css" />
+    <link rel="stylesheet" href="./output.css" />
   </head>
   <body>
-    <div class="header"><button id="addTask">add a task</button>
-    <button id="read-task">new task</button></div>
+    <div
+      class="flex justify-between font-serif text-white p-2 items-center bg-violet-700 w-full h-12"
+    >
+      <div>
+       <img src="./img/Menu Cheesesburger.svg" />
+        <h6>My To-Do Tasks</h6>
+      </div>
+      <div>
+        <button id="addTask" class="bg-white py-2 px-4 rounded">add</button>
+        <!-- <button id="read-task">new task</button> -->
+      </div>
+    </div>
+
     <div class="table">
       <table id="taskName">
         <tr>

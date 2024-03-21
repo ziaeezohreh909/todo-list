@@ -1,6 +1,5 @@
 const addBtn = document.getElementById("addTask");
-console.log(addBtn);
-addBtn.addEventListener("click", viewModals);
+addBtn.addEventListener("click", () => viewModals());
 
 function insertTaskToLocalStorage(task) {
   let taskListStr = localStorage.getItem("taskList");
@@ -15,8 +14,7 @@ function insertTaskToLocalStorage(task) {
     localStorage.setItem("taskList", taskArrayStr);
   }
 }
-
-function viewModals() {
+function viewModals(item) {
   const modal = document.getElementById("modal");
   modal.innerHTML = "";
   modal.style.position = "fixed";
@@ -40,8 +38,9 @@ function viewModals() {
     const inputPrority = prioritySelector.value;
     const inputSatus = statusSelector.value;
     const inputDeadline = deadline.value;
+    const idNumber = Math.random().toString(10);
     const task = {
-      id: Math.random().toString(10),
+      id: idNumber,
       taskName: inputTaskName,
       priority: inputPrority,
       status: inputSatus,
@@ -70,6 +69,9 @@ function viewModals() {
     "border-gray-300",
     "rounded-md"
   );
+  if (item !== undefined) {
+    taskName.value = item.taskName;
+  }
   divTask.append(taskName);
 
   const priorityDiv = document.createElement("div");
@@ -101,7 +103,9 @@ function viewModals() {
   optionLow.value = "Low";
   optionLow.textContent = "Low";
   prioritySelector.append(optionSelect, optionHigh, optionMedium, optionLow);
-
+  if (item !== undefined) {
+    prioritySelector.value = item.priority;
+  }
   const statusDiv = document.createElement("div");
   const statusLable = document.createElement("label");
   statusLable.innerText = "Status: ";
@@ -140,6 +144,9 @@ function viewModals() {
     optionDone
   );
   statusDiv.append(statusLable, statusSelector);
+  if (item !== undefined) {
+    statusSelector.value = item.status;
+  }
 
   const deadlineDiv = document.createElement("div");
   const deadlineLable = document.createElement("label");
@@ -160,6 +167,9 @@ function viewModals() {
     "rounded-md"
   );
   deadlineDiv.append(deadlineLable, deadline);
+  if (item !== undefined) {
+    deadline.value = item.deadline;
+  }
 
   const btnDiv = document.createElement("div");
   const button = document.createElement("button");
@@ -171,8 +181,23 @@ function viewModals() {
     "rounded-md",
     "mt-3"
   );
-  button.setAttribute("type", "submit");
-  button.textContent = `Submit`;
+  if (item === undefined) {
+    button.setAttribute("type", "submit");
+    button.textContent = `Submit`;
+  } else if (item !== undefined) {
+    button.setAttribute("type", "button");
+    button.textContent = `Update`;
+    button.addEventListener("click", () =>
+      updateTask(
+        item.id,
+        taskName.value,
+        prioritySelector.value,
+        statusSelector.value,
+        deadline.value
+      )
+    );
+  }
+
   btnDiv.append(button);
 
   form.append(divTask, priorityDiv, statusDiv, deadlineDiv, btnDiv);
@@ -184,6 +209,34 @@ function closeModal() {
   modal.style.position = "";
   modal.style.zIndex = "-10";
 }
+
+const renderPriority = (priority) => {
+  const btn = document.createElement("button");
+  btn.innerHTML = priority;
+  btn.classList.add("rounded-full");
+  if (priority === "Low") {
+    btn.classList.add("bg-gray-300", "w-12");
+  } else if (priority === "High") {
+    btn.classList.add("bg-red-600", "w-16");
+  } else {
+    btn.classList.add("bg-orange-600", "w-20");
+  }
+  return btn;
+};
+
+const renderStatus = (status) => {
+  const btn = document.createElement("button");
+  btn.innerHTML = status;
+  btn.classList.add("rounded-full");
+  if (status === "To Do") {
+    btn.classList.add("bg-red-600", "w-14", "text-white");
+  } else if (status === "Doing") {
+    btn.classList.add("bg-orange-600", "w-16");
+  } else {
+    btn.classList.add("bg-green-600", "w-16", "text-white");
+  }
+  return btn;
+};
 
 function render() {
   const table = document.getElementById("render-data");
@@ -203,11 +256,12 @@ function render() {
       "h-15",
       "text-center"
     );
-    priorityTd.innerText = item.priority; // renderPriority(item.priority);
+    priorityTd.append(renderPriority(item.priority));
 
     let statusTd = document.createElement("td");
     statusTd.classList.add("border", "border-slate-300", "h-15", "text-center");
-    statusTd.innerText = item.status; // statusRender(item.status);
+    statusTd.append(renderStatus(item.status));
+    // statusTd.innerText = item.status; // statusRender(item.status);
 
     let deadlineTd = document.createElement("td");
     deadlineTd.classList.add(
@@ -216,38 +270,223 @@ function render() {
       "h-15",
       "text-center"
     );
-    deadlineTd.innerText = item.deadline; // deadlineRender(item.deadline);
+    let btnDeadline = document.createElement("button");
+    btnDeadline.classList.add(
+      "border",
+      "border-blue-300",
+      "rounded-full",
+      "w-28",
+      "lining-nums"
+    );
+    btnDeadline.innerText = item.deadline;
+    deadlineTd.append(btnDeadline);
 
     let actionTd = document.createElement("td");
     actionTd.classList.add("border", "border-slate-300", "h-15", "text-center");
-    actionTd.innerText = "action"; // actionButtons(item.id)
-    let btnDelet = document.createElement("button");
-    btnDelet.classList.add(
+    let btnDelete = document.createElement("button");
+    btnDelete.classList.add(
       "border",
       "border-red-600",
       "bg-red-600",
       "rounded-md",
       "w-5",
-      "h-5"
+      "h-5",
+      "m-2"
     );
+    btnDelete.setAttribute("id", "delete");
+    let deleteIcon = document.createElement("img");
+    deleteIcon.src = `./img/mingcute--delete-fill.svg`;
+    btnDelete.addEventListener("click", () => deletItem(item.id));
+    btnDelete.append(deleteIcon);
+    actionTd.append(btnDelete);
 
-    taskRow.append(nameTd, priorityTd, statusTd, deadlineTd);
+    let btnEdit = document.createElement("button");
+    btnEdit.classList.add(
+      "border",
+      "border-blue-600",
+      "bg-blue-600",
+      "rounded-md",
+      "w-5",
+      "h-5",
+      "m-2"
+    );
+    let editIcon = document.createElement("img");
+    editIcon.src = `./img/mdi--edit.svg`;
+    btnEdit.addEventListener("click", () => viewModals(item));
+    btnEdit.append(editIcon);
+    actionTd.append(btnEdit);
+
+    let btnView = document.createElement("button");
+    btnView.classList.add(
+      "border",
+      "border-gray-500",
+      "bg-gray-500",
+      "rounded-md",
+      "w-5",
+      "h-5",
+      "m-2"
+    );
+    let viewIcon = document.createElement("img");
+    viewIcon.src = `./img/carbon--view-filled.svg`;
+    btnView.addEventListener("click", () => ViewItem(item.id));
+    btnView.append(viewIcon);
+    actionTd.append(btnView);
+
+    taskRow.append(nameTd, priorityTd, statusTd, deadlineTd, actionTd);
     table.append(taskRow);
   });
 }
 render();
 
-function renderPriority() {}
+function deletItem(taskId) {
+  let dataFromLocalStorage = localStorage.getItem("taskList");
+  let taskList = JSON.parse(dataFromLocalStorage);
+  let newTaskList = [];
+  for (const task of taskList) {
+    if (task.id !== taskId) {
+      newTaskList.push(task);
+    }
+  }
+  let newTaskListStr = JSON.stringify(newTaskList);
+  localStorage.setItem("taskList", newTaskListStr);
+  render();
+}
 
-// const btnNewTask = document.getElementById("read-task");
+function ViewItem(taskId) {
+  let dataFromLocalStorage = localStorage.getItem("taskList");
+  let taskList = JSON.parse(dataFromLocalStorage);
+  let foundTask;
+  for (const task of taskList) {
+    if (task.id === taskId) {
+      foundTask = task;
+      break;
+    }
+  }
+  viewTask(foundTask);
+}
 
-// btnNewTask.addEventListener("click", () => readTasks());
+function viewTask(task) {
+  const modal = document.getElementById("modal");
+  modal.innerHTML = "";
+  modal.style.position = "fixed";
+  modal.style.zIndex = "1";
+  const closeModalDiv = document.createElement("div");
+  closeModalDiv.classList.add("flex", "justify-end", "px-3", "py-2");
+  modal.append(closeModalDiv);
+  const closeIcon = document.createElement("img");
+  closeIcon.src = `./img/gg--close-r.svg`;
+  closeIcon.addEventListener("click", () => closeModal());
+  closeModalDiv.append(closeIcon);
 
-// async function readTasks() {
-//   const taskList = await fetch("http://localhost:2314/tasks").then((data) =>
-//     data.json()
-//   );
-//   for (let task of taskList) {
-//     createTask(task);
-//   }
-// }
+  const modalContent = document.createElement("div");
+  modalContent.classList.add("font-serif", "p-3");
+  modal.append(modalContent);
+
+  const divTask = document.createElement("div");
+  divTask.classList.add("flex", "gap-3", "items-center");
+  const taskLable = document.createElement("label");
+  taskLable.innerText = "Task Name: ";
+  divTask.append(taskLable);
+  const taskName = document.createElement("h5");
+  taskName.innerText = task.taskName;
+  taskName.classList.add(
+    "px-4",
+    "py-2",
+    "mt-2",
+    "w-60",
+    "text-gray-700",
+    "border",
+    "border-gray-300",
+    "rounded-md",
+    "bg-white"
+  );
+  divTask.append(taskName);
+
+  const priorityDiv = document.createElement("div");
+  priorityDiv.classList.add("flex", "gap-3", "items-center");
+  const priorityLable = document.createElement("label");
+  priorityLable.innerText = "Priority: ";
+  const prioritySelector = document.createElement("h5");
+  prioritySelector.innerText = task.priority;
+  prioritySelector.classList.add(
+    "px-4",
+    "py-3",
+    "mt-2",
+    "mx-6",
+    "w-60",
+    "text-gray-700",
+    "bg-white",
+    "border",
+    "border-gray-300",
+    "rounded-md"
+  );
+  priorityDiv.append(priorityLable, prioritySelector);
+
+  const statusDiv = document.createElement("div");
+  statusDiv.classList.add("flex", "gap-3", "items-center");
+  const statusLable = document.createElement("label");
+  statusLable.innerText = "Status: ";
+  const statusSelector = document.createElement("h5");
+  statusSelector.classList.add(
+    "px-4",
+    "py-2",
+    "mt-2",
+    "mx-8",
+    "text-gray-700",
+    "bg-white",
+    "border",
+    "border-gray-300",
+    "rounded-md",
+    "shadow-sm",
+    "focus:outline-none",
+    "focus:ring-indigo-500",
+    "focus:border-indigo-500"
+  );
+  statusSelector.innerText = task.status;
+  statusDiv.append(statusLable, statusSelector);
+
+  const deadlineDiv = document.createElement("div");
+  deadlineDiv.classList.add("flex", "gap-3", "items-center");
+  const deadlineLable = document.createElement("label");
+  deadlineLable.innerText = "Deadline: ";
+  const deadline = document.createElement("h5");
+  deadline.innerText = task.deadline;
+  deadline.classList.add(
+    "px-4",
+    "py-2",
+    "mt-2",
+    "mx-3",
+    "text-gray-300",
+    "bg-white",
+    "border",
+    "border-gray-300",
+    "rounded-md"
+  );
+  deadlineDiv.append(deadlineLable, deadline);
+
+  modalContent.append(divTask, priorityDiv, statusDiv, deadlineDiv);
+}
+
+function updateTask(
+  itemId,
+  taskName,
+  prioritySelector,
+  statusSelector,
+  deadline
+) {
+  let dataFromLocalStorage = localStorage.getItem("taskList");
+  let taskList = JSON.parse(dataFromLocalStorage);
+  let newTaskList = [];
+  for (let task of taskList) {
+    if (task.id === itemId) {
+      task.taskName = taskName;
+      task.priority = prioritySelector;
+      task.status = statusSelector;
+      task.deadline = deadline;
+    }
+    newTaskList.push(task);
+  }
+  let newTaskListStr = JSON.stringify(newTaskList);
+  localStorage.setItem("taskList", newTaskListStr);
+  render();
+}

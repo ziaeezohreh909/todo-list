@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./output.css" />
   </head>
   <body>
-    <div
+    <header
       class="flex justify-between font-serif text-white p-2 items-center bg-violet-700 w-full h-12"
     >
       <div class="flex">
@@ -15,15 +15,54 @@
         <h6>My To-Do Tasks</h6>
       </div>
       <div class="flex justify-center gap-3">
-        <div class="items-center px-2 mt-1 rounded-md bg-violet-600 h-7 flex justify-between w-60">   <svg  xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="white" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0c.41-.41.41-1.08 0-1.49zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14"/></svg>
-        <input type="search" placeholder="search" class="rounded-md bg-violet-600"/>
+        <div
+          class="items-center px-2 mt-1 rounded-md bg-violet-600 h-7 flex justify-between w-60"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1em"
+            height="1em"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="white"
+              d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0c.41-.41.41-1.08 0-1.49zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14"
+            />
+          </svg>
+          <input
+            type="search"
+            placeholder="search"
+            class="rounded-md bg-violet-600"
+          />
         </div>
         <div class="items-center py-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 512 512"><path fill="#ffffff" d="M3.9 54.9C10.5 40.9 24.5 32 40 32h432c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6v-79.1L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9"/></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1.2rem"
+            height="1.2rem"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="#ffffff"
+              d="M3.9 54.9C10.5 40.9 24.5 32 40 32h432c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6v-79.1L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9"
+            />
+          </svg>
         </div>
-        <button id="addTask" calass="border bg-violet-900 items-center "><svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 256 256"><path fill="#ffffff" d="M208 32H48a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16m-24 104h-48v48a8 8 0 0 1-16 0v-48H72a8 8 0 0 1 0-16h48V72a8 8 0 0 1 16 0v48h48a8 8 0 0 1 0 16"/></svg></button>
+        <button id="addTask" calass="border bg-violet-900 items-center ">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1.2rem"
+            height="1.2rem"
+            viewBox="0 0 256 256"
+          >
+            <path
+              fill="#ffffff"
+              d="M208 32H48a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16m-24 104h-48v48a8 8 0 0 1-16 0v-48H72a8 8 0 0 1 0-16h48V72a8 8 0 0 1 16 0v48h48a8 8 0 0 1 0 16"
+            />
+          </svg>
+        </button>
       </div>
-    </div>
+    </header>
 
     <div class="table w-full">
       <table
@@ -40,14 +79,14 @@
           </tr>
         </thead>
         <tbody id="render-data">
-          <tr>
+          <!-- <tr>
             <td id="taskName" class="border border-slate-300 h-15 p-2">
               walk the dog
             </td>
             <td id="priority" class="border border-slate-300 h-15 text-center">
               <button id="low" class="border border-gray-300 bg-gray-300 rounded-full w-12">Low</button>
-              <button id="low" class="border border-red-600 bg-red-600 rounded-full text-white w-14">High</button>
-              <button id="low" class="border border-orange-600 bg-orange-600 rounded-full w-20">Medium</button>
+              <button id="high" class="border border-red-600 bg-red-600 rounded-full text-white w-14">High</button>
+              <button id="mediun" class="border border-orange-600 bg-orange-600 rounded-full w-20">Medium</button>
             </td>
             <td id="status" class="border border-slate-300 h-15 text-center">
               <button id="low" class="border border-red-600 bg-red-600 rounded-full text-white w-14">Todo</button>
@@ -58,15 +97,27 @@
               <button id="low" class="border border-blue-300  rounded-full w-28 lining-nums">1402-12-23</button>
             </td>
             <td id="action" class="border border-slate-300 h-15 text-center">
-              <button id="delet" class="border border-red-600 bg-red-600 rounded-md w-5 h-5"><svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 1024 1024"><path fill="#ffffff" d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32m-200 0H360v-72h304z"/></svg></button>
-              <button id="edit" class="border border-blue-600 bg-blue-600 rounded-md w-5 h-5"><svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 20 20"><path fill="#ffffff" d="M12.92 2.873a2.975 2.975 0 0 1 4.207 4.207l-.669.669l-4.207-4.207zM11.544 4.25l-7.999 7.999a2.438 2.438 0 0 0-.655 1.194l-.878 3.95a.5.5 0 0 0 .597.597l3.926-.873a2.518 2.518 0 0 0 1.234-.678l7.982-7.982z"/></svg></button>
-              <button id="view" class="border border-gray-500 bg-gray-500 rounded-md w-5 h-6"><svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 32 32"><circle cx="16" cy="16" r="4" fill="#ffffff"/><path fill="#ffffff" d="M30.94 15.66A16.69 16.69 0 0 0 16 5A16.69 16.69 0 0 0 1.06 15.66a1 1 0 0 0 0 .68A16.69 16.69 0 0 0 16 27a16.69 16.69 0 0 0 14.94-10.66a1 1 0 0 0 0-.68M16 22.5a6.5 6.5 0 1 1 6.5-6.5a6.51 6.51 0 0 1-6.5 6.5"/></svg></button>
+              <button id="delete" class="border border-red-600 bg-red-600 rounded-md w-5 h-5"><img src="./img/mingcute--delete-fill.svg" ></button>
+              <button id="edit" class="border border-blue-600 bg-blue-600 rounded-md w-5 h-5"><img src="./img/mdi--edit.svg"></button>
+              <button id="view" class=" border border-gray-500 bg-gray-500 rounded-md w-5 h-6"><img src="./img/carbon--view-filled.svg" alt=""></button>
             </td>
-          </tr>
+          </tr>-->
         </tbody>
       </table>
     </div>
-    <div id="modal" class="bg-blue-200 w-96 fixed z-10"></div>
+    <div class="text-black text-xs mt-5 px-3 font-serif flex justify-end gap-3">
+      <h6>Rows per page:</h6>
+      <button class="flex">
+        All<img src="./img/gridicons--dropdown.svg" />
+      </button>
+      <h6>1-3 of 3</h6>
+      <button>
+        <img src="./img/material-symbols-light--navigate-before.svg" /></button
+      ><button>
+        <img src="./img/material-symbols-light--navigate-next.svg" />
+      </button>
+    </div>
+    <div id="modal" class="bg-blue-200 w-96 fixed z-10 rounded-xl"></div>
     <script src="./main.js"></script>
   </body>
 </html>
